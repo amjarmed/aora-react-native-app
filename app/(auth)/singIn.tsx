@@ -1,9 +1,10 @@
+import { SignIn } from "@/app/api/appwrite";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingIn = () => {
@@ -12,7 +13,25 @@ const SingIn = () => {
     password: "",
   });
   const [isSubmit, setIsSubmit] = useState(false);
-  const submitHandler = () => {};
+  const submitHandler = async () => {
+    if (!form.email || !form.password) {
+      Alert.alert("Error", "Please fill all the fields");
+    }
+    setIsSubmit(true);
+
+    try {
+      await SignIn({ ...form });
+
+      // todo: set it to global state...
+
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", "sigup error ");
+      //  Alert.alert("Error", error.message);
+      setIsSubmit(false);
+      setForm({ email: "", password: "" });
+    }
+  };
   return (
     <SafeAreaView className="bg-primary h-full ">
       <ScrollView>
@@ -30,20 +49,24 @@ const SingIn = () => {
 
           <FormField
             title="Email"
-            placeholder="Enter your email"
+            placeholder="john.doe@example.com"
             value={form.email}
             onChangeText={(text) => setForm({ ...form, email: text })}
+            otherStyle="mt-7 "
+            autoComplete="email"
+            inputStyle="border border-red-500"
+            autoFocus={true}
+            inputMode="email"
             keyboardType="email-address"
-            otherStyle="mt-7"
           />
 
           <FormField
             title="Password"
-            placeholder="Enter your password"
+            placeholder="*********"
             value={form.email}
             onChangeText={(text) => setForm({ ...form, password: text })}
-            keyboardType="visible-password"
             otherStyle="mt-7"
+            keyboardType="visible-password"
           />
 
           <CustomButton

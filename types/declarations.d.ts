@@ -33,16 +33,6 @@ declare interface CustomButtonProps {
   isLoading?: boolean;
 }
 
-// form field interface
-
-declare interface FormFieldProps {
-  title: string;
-  placeholder: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  otherStyle?: string;
-  keyboardType: KeyboardType;
-}
 // sign in form
 
 declare interface SignInForm {
@@ -52,19 +42,7 @@ declare interface SignInForm {
 
 // sign up form
 declare interface SignUpForm {
-  name: string;
   username: string;
-  phone: string;
   email: string;
   password: string;
-  confirmPassword: string;
 }
-
-// keyboard type
-type KeyboardType =
-  | "default"
-  | "email-address"
-  | "visible-password"
-  | "url"
-  | "numeric"
-  | "phone-pad";

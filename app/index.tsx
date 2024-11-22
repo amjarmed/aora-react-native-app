@@ -48,7 +48,7 @@ const App = () => {
             />
           </View>
           <Text className="text-sm text-gray-100 mt-7 font-pregular text-center">
-            Where creativity meets innovation: embark on a journey pf limitless
+            Where creativity meets innovation: embark on a journey of limitless
             exploration with Aora
           </Text>
 

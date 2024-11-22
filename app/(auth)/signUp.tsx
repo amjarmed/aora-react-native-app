@@ -1,9 +1,10 @@
+import { SignUp } from "@/app/api/appwrite";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingUp = () => {
@@ -13,7 +14,25 @@ const SingUp = () => {
     password: "",
   });
   const [isSubmit, setIsSubmit] = useState(false);
-  const submitHandler = () => {};
+  const submitHandler = async () => {
+    if (!form.username || !form.email || !form.password) {
+      Alert.alert("Error", "Please fill all the fields");
+    }
+    setIsSubmit(true);
+
+    try {
+      const result = await SignUp({ ...form });
+
+      // todo: set it to global state...
+
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", "sigup error ");
+      //  Alert.alert("Error", error.message);
+      setIsSubmit(false);
+      setForm({ username: "", email: "", password: "" });
+    }
+  };
   return (
     <SafeAreaView className="bg-primary h-full ">
       <ScrollView>
@@ -31,28 +50,34 @@ const SingUp = () => {
           <FormField
             title="User name"
             placeholder="Enter your user name"
-            value={form.email}
-            onChangeText={(text) => setForm({ ...form, email: text })}
-            keyboardType="default"
+            value={form.username}
+            onChangeText={(text) => setForm({ ...form, username: text })}
             otherStyle="mt-7"
+            inputMode="text"
+            keyboardType="default"
+            autoFocus={true}
           />
-
           <FormField
             title="Email"
-            placeholder="Enter your email"
+            placeholder="john.doe@example.com"
             value={form.email}
             onChangeText={(text) => setForm({ ...form, email: text })}
+            otherStyle="mt-7 "
+            autoComplete="email"
+            inputStyle="border border-red-500"
+            inputMode="email"
             keyboardType="email-address"
-            otherStyle="mt-7"
           />
 
           <FormField
             title="Password"
-            placeholder="Enter your password"
+            placeholder="*********"
             value={form.email}
             onChangeText={(text) => setForm({ ...form, password: text })}
-            keyboardType="visible-password"
             otherStyle="mt-7"
+            autoComplete="password"
+            inputMode="text"
+            keyboardType="visible-password"
           />
 
           <CustomButton
