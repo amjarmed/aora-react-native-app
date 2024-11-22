@@ -1,5 +1,10 @@
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import {
+  SplashScreen,
+  Stack,
+  useLocalSearchParams,
+  useRouter,
+} from "expo-router";
 import React, { useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +22,11 @@ const RootLayout = () => {
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
 
+  // routes
+
+  const router = useRouter();
+  const params = useLocalSearchParams();
+
   useEffect(() => {
     if (error) throw error;
 
@@ -24,13 +34,41 @@ const RootLayout = () => {
   }, [fontsLoaded, error]);
 
   if (!fontsLoaded && !error) return null;
+
   return (
     <Stack
       screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f4511e",
+        },
         headerShown: false,
+        contentStyle: { flex: 1 },
       }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="(auth)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="(tabs)"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="/search/[query]"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };

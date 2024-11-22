@@ -1,11 +1,26 @@
+import { ThemeColors } from "@/types/theme";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const AuthLayout = () => {
   return (
-    <View>
-      <Text>AuthLayout</Text>
-    </View>
+    <>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            paddingTop: 40,
+          },
+        }}
+      >
+        <Stack.Screen name="singIn" options={{ headerShown: false }} />
+        <Stack.Screen name="singUp" options={{ headerShown: false }} />
+      </Stack>
+
+      <StatusBar style="light" backgroundColor={ThemeColors.primary} />
+    </>
   );
 };
 

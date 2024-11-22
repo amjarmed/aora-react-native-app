@@ -8,6 +8,7 @@
     "scheme": "aora",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "updates": { "enabled": true },
     "ios": {
       "supportsTablet": true
     },

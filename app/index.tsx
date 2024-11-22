@@ -1,8 +1,18 @@
 import { verifyInstallation } from "nativewind";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 // Import your global CSS file
+import CustomButton from "@/components/CustomButton";
 import { images } from "@/constants";
+import { ThemeColors } from "@/types/theme";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import "../styles/global.css";
 const App = () => {
@@ -15,7 +25,7 @@ const App = () => {
           height: "100%",
         }}
       >
-        <View className="w-full justify-center items-center h-full px-4">
+        <View className="w-full justify-center items-center  px-4 min-h-[85vh]">
           <Image
             source={images.logo}
             className="w-[130px] h-[84px]"
@@ -37,8 +47,21 @@ const App = () => {
               resizeMode="contain"
             />
           </View>
+          <Text className="text-sm text-gray-100 mt-7 font-pregular text-center">
+            Where creativity meets innovation: embark on a journey pf limitless
+            exploration with Aora
+          </Text>
+
+          <CustomButton
+            title="continue with Email"
+            handlePress={() => {
+              router.push("/singIn");
+            }}
+            containerStyle="w-full mt-7"
+          />
         </View>
       </ScrollView>
+      <StatusBar backgroundColor={ThemeColors.primary} barStyle="default" />
     </SafeAreaView>
   );
 };

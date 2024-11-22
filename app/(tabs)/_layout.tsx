@@ -1,3 +1,4 @@
+import { ThemeColors } from "@/types/theme";
 import { Tabs } from "expo-router";
 import React from "react";
 import {
@@ -52,7 +53,7 @@ const TabsLayout = () => {
           tabBarActiveTintColor: "#FFA001",
           tabBarInactiveTintColor: "#CDCDE0",
           tabBarStyle: {
-            backgroundColor: "#161622",
+            backgroundColor: ThemeColors.primary,
             borderTopWidth: 1,
             borderTopColor: "#232533",
             height: 84,
