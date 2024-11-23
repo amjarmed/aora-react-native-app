@@ -1,18 +1,24 @@
-import { SignIn } from "@/app/api/appwrite";
+import { getUser, SignIn } from "@/app/api/appwrite";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingIn = () => {
+  const { setUser, setLoggedIn } = useGlobalContext();
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const [isSubmit, setIsSubmit] = useState(false);
+  const [isEmailFocus, setIsEmailFocus] = useState(false);
+  const [isPasswordFocus, setIsPasswordFocus] = useState(false);
+
   const submitHandler = async () => {
     if (!form.email || !form.password) {
       Alert.alert("Error", "Please fill all the fields");
@@ -21,8 +27,11 @@ const SingIn = () => {
 
     try {
       await SignIn({ ...form });
+      const result = await getUser();
 
-      // todo: set it to global state...
+      setUser(result);
+
+      setLoggedIn(true);
 
       router.replace("/home");
     } catch (error) {
@@ -30,6 +39,8 @@ const SingIn = () => {
       //  Alert.alert("Error", error.message);
       setIsSubmit(false);
       setForm({ email: "", password: "" });
+    } finally {
+      setIsSubmit(false);
     }
   };
   return (
@@ -54,8 +65,9 @@ const SingIn = () => {
             onChangeText={(text) => setForm({ ...form, email: text })}
             otherStyle="mt-7 "
             autoComplete="email"
-            inputStyle="border border-red-500"
-            autoFocus={true}
+            inputStyle={isEmailFocus ? "border-1 border-secondary-100" : ""}
+            onFocus={() => setIsEmailFocus(!isEmailFocus)}
+            onBlur={() => setIsEmailFocus(false)}
             inputMode="email"
             keyboardType="email-address"
           />
@@ -67,6 +79,9 @@ const SingIn = () => {
             onChangeText={(text) => setForm({ ...form, password: text })}
             otherStyle="mt-7"
             keyboardType="visible-password"
+            inputStyle={isPasswordFocus ? "border-1 border-secondary-100" : ""}
+            onFocus={() => setIsPasswordFocus(!isPasswordFocus)}
+            onBlur={() => setIsPasswordFocus(false)}
           />
 
           <CustomButton

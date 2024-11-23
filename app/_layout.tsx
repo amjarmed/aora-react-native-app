@@ -1,3 +1,4 @@
+import { GlobalProvider } from "@/context/GlobalProvider";
 import { useFonts } from "expo-font";
 import {
   SplashScreen,
@@ -36,40 +37,42 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: "#f4511e",
-        },
-        headerShown: false,
-        contentStyle: { flex: 1 },
-      }}
-    >
-      <Stack.Screen
-        name="index"
-        options={{
+    <GlobalProvider>
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#f4511e",
+          },
           headerShown: false,
+          contentStyle: { flex: 1 },
         }}
-      />
-      <Stack.Screen
-        name="(auth)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="/search/[query]"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="(auth)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="/search/[query]"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </GlobalProvider>
   );
 };
 

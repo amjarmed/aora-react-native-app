@@ -2,18 +2,29 @@ import { SignUp } from "@/app/api/appwrite";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Models } from "react-native-appwrite";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SingUp = () => {
+  // state
+  const { setUser, setLoggedIn } = useGlobalContext();
+
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
   });
   const [isSubmit, setIsSubmit] = useState(false);
+
+  // styles
+  const [isEmailFocus, setIsEmailFocus] = useState(false);
+  const [isPasswordFocus, setIsPasswordFocus] = useState(false);
+  const [isUsernameFocus, setIsUsernameFocus] = useState(false);
+
   const submitHandler = async () => {
     if (!form.username || !form.email || !form.password) {
       Alert.alert("Error", "Please fill all the fields");
@@ -23,12 +34,15 @@ const SingUp = () => {
     try {
       const result = await SignUp({ ...form });
 
-      // todo: set it to global state...
+      setUser(result as unknown as Models.Document);
+      setLoggedIn(true);
 
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error", "sigup error ");
       //  Alert.alert("Error", error.message);
+      setIsSubmit(false);
+    } finally {
       setIsSubmit(false);
       setForm({ username: "", email: "", password: "" });
     }
@@ -55,7 +69,9 @@ const SingUp = () => {
             otherStyle="mt-7"
             inputMode="text"
             keyboardType="default"
-            autoFocus={true}
+            inputStyle={isUsernameFocus ? "border-1 border-secondary-100" : ""}
+            onFocus={() => setIsUsernameFocus(!isUsernameFocus)}
+            onBlur={() => setIsUsernameFocus(false)}
           />
           <FormField
             title="Email"
@@ -64,7 +80,9 @@ const SingUp = () => {
             onChangeText={(text) => setForm({ ...form, email: text })}
             otherStyle="mt-7 "
             autoComplete="email"
-            inputStyle="border border-red-500"
+            inputStyle={isEmailFocus ? "border-1 border-secondary-100" : ""}
+            onFocus={() => setIsEmailFocus(!isEmailFocus)}
+            onBlur={() => setIsEmailFocus(false)}
             inputMode="email"
             keyboardType="email-address"
           />
@@ -75,9 +93,10 @@ const SingUp = () => {
             value={form.email}
             onChangeText={(text) => setForm({ ...form, password: text })}
             otherStyle="mt-7"
-            autoComplete="password"
-            inputMode="text"
             keyboardType="visible-password"
+            inputStyle={isPasswordFocus ? "border-1 border-secondary-100" : ""}
+            onFocus={() => setIsPasswordFocus(!isPasswordFocus)}
+            onBlur={() => setIsPasswordFocus(false)}
           />
 
           <CustomButton

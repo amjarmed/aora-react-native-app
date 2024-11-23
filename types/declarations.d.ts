@@ -27,8 +27,8 @@ declare module "*.jpg" {
 // interface
 declare interface CustomButtonProps {
   title: string;
-  handlePress: () => void;
-  containerStyle: string;
+  handlePress?: () => void;
+  containerStyle?: string;
   textStyle?: string;
   isLoading?: boolean;
 }
@@ -45,4 +45,9 @@ declare interface SignUpForm {
   username: string;
   email: string;
   password: string;
+}
+
+// TrendingProps interface
+declare interface TrendingProps {
+  posts: Post[];
 }
