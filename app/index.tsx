@@ -14,12 +14,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 //  global CSS file  verifyInstallation();
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { Toast } from "@/lib/utils";
 import "../styles/global.css";
 const App = () => {
   const { isLoading, isLoggedIn } = useGlobalContext();
 
   return (
     <>
+      <Toast />
       {!isLoading && isLoggedIn ? (
         <Redirect href="/home" />
       ) : (

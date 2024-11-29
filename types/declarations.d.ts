@@ -51,3 +51,28 @@ declare interface SignUpForm {
 declare interface TrendingProps {
   posts: Post[];
 }
+
+declare interface User {
+  $collectionId: string;
+  $createdAt: string;
+  $databaseId: string;
+  $id: string;
+  $permissions: [];
+  $updatedAt: string;
+  accountId: string;
+  avatar: string;
+  email: string;
+  username: string;
+}
+
+declare interface Post {
+  $id: string;
+  title: string;
+  prompt: string;
+  thumbnail: string;
+  users: {
+    avatar: string;
+    username: string;
+  };
+  video: string;
+}

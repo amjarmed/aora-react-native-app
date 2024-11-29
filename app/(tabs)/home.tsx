@@ -1,10 +1,12 @@
 import { getAllVideos, getLatestVideos } from "@/app/api/appwrite";
 import EmptyState from "@/components/EmptyState";
 import SearchInput from "@/components/SearchInput";
-import Tranding from "@/components/Tranding";
+import Trending from "@/components/Trending";
 import VideoCard from "@/components/VideoCard";
 import { images } from "@/constants";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import useAppwrite from "@/lib/useAppwrite";
+import { getUserName } from "@/lib/utils";
 import { ThemeColors } from "@/types/theme";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
@@ -12,6 +14,7 @@ import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
+  const { user } = useGlobalContext();
   const { data: videos, refetch } = useAppwrite(getAllVideos);
   const { data: latestVideos } = useAppwrite(getLatestVideos);
 
@@ -30,13 +33,7 @@ const Home = () => {
           data={videos}
           keyExtractor={(item) => item.$id}
           renderItem={({ item }) => (
-            <VideoCard
-              avatar={item.avatar}
-              title={item.title}
-              username={item.users.username}
-              video={item.video}
-              thumbnail={item.thumbnail}
-            />
+            <VideoCard video={item as unknown as Post} />
           )}
           ListHeaderComponent={() => (
             <View className="my-6 px-4 space-y-6  ">
@@ -46,7 +43,7 @@ const Home = () => {
                     Welcome Back
                   </Text>
                   <Text className="text-2xl font-psemibold text-white">
-                    John
+                    {getUserName(user)}
                   </Text>
                 </View>
                 <View>
@@ -60,19 +57,14 @@ const Home = () => {
                 </View>
               </View>
               <View>
-                <SearchInput
-                  title="Search"
-                  placeholder="Search for a video topic"
-                  value=""
-                  onChangeText={(text) => console.log(text)}
-                />
+                <SearchInput />
               </View>
               <View className="w-full flex-1 pt-5 pb-8 ">
                 <Text className="text-gray-100 text-lg font-pregular">
                   Lates Videos
                 </Text>
 
-                <Tranding videos={latestVideos ?? []} />
+                <Trending videos={latestVideos as unknown as Post[]} />
               </View>
             </View>
           )}

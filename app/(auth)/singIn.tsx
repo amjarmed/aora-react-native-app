@@ -3,6 +3,7 @@ import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { showToast } from "@/lib/utils";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -28,16 +29,25 @@ const SingIn = () => {
     try {
       await SignIn({ ...form });
       const result = await getUser();
+      if (result) {
+        setUser(result);
+        setLoggedIn(true);
 
-      setUser(result);
-
-      setLoggedIn(true);
-
-      router.replace("/home");
+        router.replace("/home");
+      } else {
+        setUser(null);
+        setLoggedIn(false);
+        showToast(
+          "error",
+          "error logIn",
+          "Please check your email and password"
+        );
+      }
     } catch (error) {
       Alert.alert("Error", "sigup error ");
       //  Alert.alert("Error", error.message);
       setIsSubmit(false);
+
       setForm({ email: "", password: "" });
     } finally {
       setIsSubmit(false);
@@ -78,7 +88,6 @@ const SingIn = () => {
             value={form.email}
             onChangeText={(text) => setForm({ ...form, password: text })}
             otherStyle="mt-7"
-            keyboardType="visible-password"
             inputStyle={isPasswordFocus ? "border-1 border-secondary-100" : ""}
             onFocus={() => setIsPasswordFocus(!isPasswordFocus)}
             onBlur={() => setIsPasswordFocus(false)}

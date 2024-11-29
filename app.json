@@ -8,7 +8,9 @@
     "scheme": "aora",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "updates": { "enabled": true },
+    "updates": {
+      "enabled": true
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -33,6 +35,13 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
         }
       ]
     ],

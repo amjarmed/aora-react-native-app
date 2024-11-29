@@ -12,8 +12,8 @@ import { Models } from "react-native-appwrite";
 
 // Define the context interface
 interface GlobalContextType {
-  user: Models.Document | undefined;
-  setUser: (user: Models.Document | undefined) => void;
+  user: Models.Document[] | null;
+  setUser: (user: Models.Document[] | null) => void;
   isLoggedIn: boolean;
   setLoggedIn: (value: boolean) => void;
   isLoading: boolean;
@@ -39,13 +39,13 @@ interface GlobalProviderProps {
 // GlobalProvider Component
 export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState<Models.Document | undefined>(undefined);
+  const [user, setUser] = useState<Models.Document[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const USER_STORAGE_KEY = "user";
 
   // Save user to AsyncStorage
-  const saveUserToStorage = async (user: Models.Document | undefined) => {
+  const saveUserToStorage = async (user: Models.Document[] | null) => {
     setIsLoading(true);
     try {
       if (user) {
@@ -70,7 +70,7 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     try {
       const userData = await AsyncStorage.getItem(USER_STORAGE_KEY);
       if (userData) {
-        const parsedUser = JSON.parse(userData) as Models.Document;
+        const parsedUser = JSON.parse(userData) as Models.Document[];
         console.log("load user from storage");
 
         setUser(parsedUser);
@@ -93,8 +93,8 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         saveUserToStorage(res); // Save fetched user to storage
       } else {
         setLoggedIn(false);
-        setUser(undefined);
-        saveUserToStorage(undefined); // Clear storage
+        setUser(null);
+        saveUserToStorage(null); // Clear storage
       }
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -123,12 +123,14 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   }, []);
 
   const value: GlobalContextType = {
-    isLoggedIn,
     user,
+    isLoggedIn,
     isLoading,
     setLoggedIn,
     setUser,
   };
+
+  //   console.log("GlobalContext :: ", user);
 
   return (
     <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
