@@ -1,4 +1,4 @@
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -19,7 +19,7 @@ const AuthLayout = () => {
         <Stack.Screen name="singUp" options={{ headerShown: false }} />
       </Stack>
 
-      <StatusBar style="light" backgroundColor={ThemeColors.primary} />
+      <StatusBar style="light" backgroundColor={AppTheme.primary} />
     </>
   );
 };

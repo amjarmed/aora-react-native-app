@@ -1,4 +1,4 @@
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { Tabs } from "expo-router";
 import React from "react";
 import {
@@ -50,10 +50,10 @@ const TabsLayout = () => {
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarActiveTintColor: ThemeColors.tabBarActiveTintColor,
-          tabBarInactiveTintColor: ThemeColors.tabBarInactiveTintColor,
+          tabBarActiveTintColor: AppTheme.tabBarActiveTintColor,
+          tabBarInactiveTintColor: AppTheme.tabBarInactiveTintColor,
           tabBarStyle: {
-            backgroundColor: ThemeColors.primary,
+            backgroundColor: AppTheme.primary,
             height: 84,
           },
         }}

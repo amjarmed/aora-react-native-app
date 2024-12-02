@@ -6,7 +6,7 @@ import { icons } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import useAppwrite from "@/lib/useAppwrite";
 import { getUserName } from "@/lib/utils";
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
@@ -88,7 +88,7 @@ const Profile = () => {
           )}
         />
       </SafeAreaView>
-      <StatusBar style="light" backgroundColor={ThemeColors.primary} />
+      <StatusBar style="light" backgroundColor={AppTheme.primary} />
     </>
   );
 };

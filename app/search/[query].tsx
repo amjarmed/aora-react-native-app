@@ -3,7 +3,7 @@ import EmptyState from "@/components/EmptyState";
 import SearchInput from "@/components/SearchInput";
 import VideoCard from "@/components/VideoCard";
 import useAppwrite from "@/lib/useAppwrite";
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
@@ -56,7 +56,7 @@ const Search = () => {
           )}
         />
       </SafeAreaView>
-      <StatusBar style="light" backgroundColor={ThemeColors.primary} />
+      <StatusBar style="light" backgroundColor={AppTheme.primary} />
     </>
   );
 };

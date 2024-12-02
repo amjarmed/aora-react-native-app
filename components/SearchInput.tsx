@@ -1,5 +1,5 @@
 import { icons } from "@/constants";
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { router, usePathname } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, TextInput, TouchableOpacity, View } from "react-native";
@@ -13,7 +13,7 @@ const SearchInput = ({ initialQuery }: SearchProps) => {
 
   return (
     <View
-      className={`w-full h-16 px-4 mt-4 bg-black-100 rounded-2xl border-2 border-black-200  flex flex-row items-center space-x-4   `}
+      className={`w-full h-16 px-4 mt-4 bg-black-100 rounded-2xl border-2 border-black-200  flex flex-row items-center gap-x-4   `}
     >
       <TextInput
         className="text-base mt-1.5 text-white flex-1 font-pregular"
@@ -24,7 +24,7 @@ const SearchInput = ({ initialQuery }: SearchProps) => {
         keyboardType="web-search"
         clearButtonMode="while-editing"
         clearTextOnFocus={true}
-        cursorColor={ThemeColors.secondary}
+        cursorColor={AppTheme.secondary}
       />
       <TouchableOpacity
         onPress={() => {

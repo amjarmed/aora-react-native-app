@@ -1,6 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import { images } from "@/constants";
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import { Redirect, router } from "expo-router";
 import React from "react";
 import {
@@ -67,7 +67,7 @@ const App = () => {
               />
             </View>
           </ScrollView>
-          <StatusBar backgroundColor={ThemeColors.primary} barStyle="default" />
+          <StatusBar backgroundColor={AppTheme.primary} barStyle="default" />
         </SafeAreaView>
       )}
     </>

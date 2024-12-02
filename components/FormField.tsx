@@ -1,6 +1,6 @@
 import { icons } from "@/constants";
 import { FormFieldProps } from "@/types/constants";
-import { ThemeColors } from "@/types/theme";
+import { AppTheme } from "@/types/theme";
 import React, { useState } from "react";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -17,7 +17,7 @@ const FormField = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View className={`${otherStyle} space-y-2 `}>
+    <View className={`${otherStyle} my-4 `}>
       <Text className="text-base px-4 text-gray-100 font-pmedium">{title}</Text>
 
       <View
@@ -33,7 +33,7 @@ const FormField = ({
           secureTextEntry={title === "Password" && !showPassword}
           clearButtonMode="while-editing"
           clearTextOnFocus={true}
-          cursorColor={ThemeColors.secondary}
+          cursorColor={AppTheme.secondary}
           {...props}
         />
         {title === "Password" && (

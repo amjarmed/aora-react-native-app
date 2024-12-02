@@ -3,7 +3,7 @@ import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { showToast } from "@/lib/utils";
+import { logInSchema, ShowToast } from "@/lib/utils";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -21,12 +21,15 @@ const SingIn = () => {
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
 
   const submitHandler = async () => {
-    if (!form.email || !form.password) {
-      Alert.alert("Error", "Please fill all the fields");
-    }
-    setIsSubmit(true);
-
     try {
+      const validation = logInSchema.safeParse(form);
+      if (!validation.success) {
+        Alert.alert("Validation Error", "Email or Password is invalid");
+        return;
+      }
+
+      setIsSubmit(true);
+
       await SignIn({ ...form });
       const result = await getUser();
       if (result) {
@@ -37,7 +40,7 @@ const SingIn = () => {
       } else {
         setUser(null);
         setLoggedIn(false);
-        showToast(
+        ShowToast(
           "error",
           "error logIn",
           "Please check your email and password"

@@ -3,6 +3,7 @@ import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { images } from "@/constants";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { userSchema } from "@/lib/utils";
 import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -26,21 +27,24 @@ const SingUp = () => {
   const [isUsernameFocus, setIsUsernameFocus] = useState(false);
 
   const submitHandler = async () => {
-    if (!form.username || !form.email || !form.password) {
-      Alert.alert("Error", "Please fill all the fields");
-    }
-    setIsSubmit(true);
-
     try {
+      const validation = userSchema.safeParse(form);
+      if (!validation.success) {
+        const errors = validation.error.errors.map((err) => err.message);
+        Alert.alert("Validation Error", errors.join("\n"));
+        return;
+      }
+
+      setIsSubmit(true);
       const result = await SignUp({ ...form });
-
-      setUser(result as unknown as Models.Document);
+      setUser(result as unknown as Models.Document[]);
       setLoggedIn(true);
-
       router.replace("/home");
     } catch (error) {
-      Alert.alert("Error", "sigup error ");
-      //  Alert.alert("Error", error.message);
+      Alert.alert(
+        "Sign Up Error",
+        error instanceof Error ? error.message : "Something went wrong"
+      );
       setIsSubmit(false);
     } finally {
       setIsSubmit(false);
