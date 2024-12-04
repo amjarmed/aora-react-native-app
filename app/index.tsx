@@ -3,25 +3,18 @@ import { images } from "@/constants";
 import { AppTheme } from "@/types/theme";
 import { Redirect, router } from "expo-router";
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ScrollView, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 //  global CSS file  verifyInstallation();
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { Toast } from "@/lib/utils";
 import "../styles/global.css";
+// import { name as appName } from "./../app.json";
+
 const App = () => {
   const { isLoading, isLoggedIn } = useGlobalContext();
 
   return (
     <>
-      <Toast />
       {!isLoading && isLoggedIn ? (
         <Redirect href="/home" />
       ) : (
@@ -74,6 +67,6 @@ const App = () => {
   );
 };
 
-export default App;
+// AppRegistry.registerComponent(appName, () => App);
 
-const styles = StyleSheet.create({});
+export default App;

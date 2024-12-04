@@ -1,14 +1,21 @@
 import CustomButton from "@/components/CustomButton";
 import { images } from "@/constants";
-import { router } from "expo-router";
+import { ExternalPathString, RelativePathString, router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 interface EmptyStateProps {
   title: string;
   subTitle: string;
+  buttonTitle: string;
+  buttonHref: RelativePathString | ExternalPathString;
 }
-const EmptyState = ({ title, subTitle }: EmptyStateProps) => {
+const EmptyState = ({
+  title,
+  subTitle,
+  buttonTitle,
+  buttonHref,
+}: EmptyStateProps) => {
   return (
     <View className=" justify-center items-center px-4">
       <Image
@@ -22,9 +29,9 @@ const EmptyState = ({ title, subTitle }: EmptyStateProps) => {
       </Text>
 
       <CustomButton
-        title="upload a video"
+        title={buttonTitle}
         containerStyle=" w-full my-5"
-        handlePress={() => router.push("/create")}
+        handlePress={() => router.push(buttonHref)}
       />
     </View>
   );

@@ -1,4 +1,5 @@
 import { GlobalProvider } from "@/context/GlobalProvider";
+import { Toast } from "@/lib/utils";
 import { useFonts } from "expo-font";
 import {
   SplashScreen,
@@ -7,6 +8,9 @@ import {
   useRouter,
 } from "expo-router";
 import React, { useEffect } from "react";
+import { AppRegistry } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { expo } from "../app.json";
 
 SplashScreen.preventAutoHideAsync();
 const RootLayout = () => {
@@ -37,43 +41,48 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <GlobalProvider>
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "#f4511e",
-          },
-          headerShown: false,
-          contentStyle: { flex: 1 },
-        }}
-      >
-        <Stack.Screen
-          name="index"
-          options={{
+    <PaperProvider>
+      <GlobalProvider>
+        <Toast />
+
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
             headerShown: false,
+            contentStyle: { flex: 1 },
           }}
-        />
-        <Stack.Screen
-          name="(auth)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="search/[query]"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
-    </GlobalProvider>
+        >
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="search/[query]"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </GlobalProvider>
+    </PaperProvider>
   );
 };
+AppRegistry.registerComponent(expo.name, () => RootLayout);
 
 export default RootLayout;

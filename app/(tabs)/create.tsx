@@ -1,11 +1,18 @@
+import { uploadNewVideo } from "@/app/api/appwrite";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { icons } from "@/constants";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { getUserId } from "@/lib/utils";
+import { UploadProps } from "@/types/constants";
 import { AppTheme } from "@/types/theme";
-import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+
+import { router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -16,28 +23,26 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Create = () => {
-  const [uploading, setUplaoding] = useState(false);
-  const [form, setForm] = useState({
+  const { user } = useGlobalContext();
+  const [uploading, setUploading] = useState(false);
+  const [form, setForm] = useState<UploadProps>({
     title: "",
     videoUrl: null,
     thumbnail: null,
     prompt: "",
   });
 
-  // video player
+  // video player setup
 
-  const player = useVideoPlayer(form.videoUrl, (player) => {
-    player.loop = true;
-    player.play();
-  });
+  const player = useVideoPlayer(form.videoUrl?.uri as string, (player) => {});
+
   // picker of video and image thumbnail
-
   const openPicker = async (selectType: string) => {
-    const result = await DocumentPicker.getDocumentAsync({
-      type:
-        selectType === "image"
-          ? ["image/png", "image/jpeg", "image/jpg"]
-          : ["video/mp4", "video/gif"],
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: [selectType === "image" ? "images" : "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
 
     if (!result.canceled) {
@@ -47,11 +52,32 @@ const Create = () => {
       if (selectType === "video") {
         setForm({ ...form, videoUrl: result.assets[0] });
       }
+    } else {
+      setTimeout(() => {
+        Alert.alert("Document picked ", JSON.stringify(result, null, 2));
+      }, 100);
     }
   };
-  // submit and publish
 
-  const submit = () => {};
+  // submit and publish
+  const submit = async () => {
+    if (!form.title || !form.prompt || !form.videoUrl || !form.thumbnail) {
+      Alert.alert("Error", "Please fill all the fields");
+    }
+    setUploading(true);
+    try {
+      await uploadNewVideo(form, getUserId(user));
+
+      Alert.alert("Success", "Video uploaded successfully");
+      router.push("/home");
+    } catch (error) {
+      console.error(
+        "Error while uploading video:",
+        error instanceof Error && error.message
+      );
+      setUploading(false);
+    }
+  };
 
   return (
     <SafeAreaView className={AppTheme.wrapperStyle}>
@@ -73,11 +99,16 @@ const Create = () => {
           <TouchableOpacity onPress={() => openPicker("video")}>
             {form.videoUrl ? (
               <VideoView
-                className=" w-full h-40 px-4 bg-black-100 rounded-2xl "
+                style={{
+                  width: "100%",
+                  height: 275,
+                  backgroundColor: "#1E1E2D",
+                  borderRadius: 16,
+                  paddingHorizontal: 16,
+                }}
+                className=" bg-black-100 "
                 player={player}
-                allowsFullscreen
-                allowsPictureInPicture
-                allowsVideoFrameAnalysis
+                contentFit="contain"
               />
             ) : (
               <View className=" w-full h-40 px-4 bg-black-100 rounded-2xl  justify-center items-center">
@@ -100,7 +131,7 @@ const Create = () => {
             {form.thumbnail ? (
               <Image
                 source={{
-                  uri: form.thumbnail,
+                  uri: form.thumbnail.uri,
                 }}
                 className="w-full h-64 rounded-2xl"
                 resizeMode="cover"

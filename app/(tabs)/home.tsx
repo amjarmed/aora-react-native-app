@@ -72,6 +72,8 @@ const Home = () => {
             <EmptyState
               title="No videos found"
               subTitle="Be the first one to upload a video"
+              buttonTitle="Upload Video"
+              buttonHref="../(tabs)/create"
             />
           )}
           refreshControl={

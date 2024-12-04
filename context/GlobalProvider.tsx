@@ -53,8 +53,6 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
           USER_STORAGE_KEY,
           JSON.stringify(user)
         );
-
-        console.log("save user to storage");
       } else {
         const removeUser = await AsyncStorage.removeItem(USER_STORAGE_KEY);
 
@@ -71,7 +69,6 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
       const userData = await AsyncStorage.getItem(USER_STORAGE_KEY);
       if (userData) {
         const parsedUser = JSON.parse(userData) as Models.Document[];
-        console.log("load user from storage");
 
         setUser(parsedUser);
         setLoggedIn(true);
@@ -87,7 +84,6 @@ export const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
     try {
       const res = await getUser();
       if (res) {
-        console.log("fetched user info");
         setLoggedIn(true);
         setUser(res);
         saveUserToStorage(res); // Save fetched user to storage

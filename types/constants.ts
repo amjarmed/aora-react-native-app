@@ -1,5 +1,6 @@
 // form field interface
 
+import { ImagePickerAsset } from "expo-image-picker";
 import { TextInputProps } from "react-native";
 
 export interface FormFieldProps extends TextInputProps {
@@ -31,3 +32,10 @@ export const zoomOut: any = {
     scale: 0.9,
   },
 };
+
+export interface UploadProps {
+  title: string;
+  videoUrl: null | ImagePickerAsset;
+  thumbnail: null | ImagePickerAsset;
+  prompt: string;
+}

@@ -11,7 +11,9 @@ import { z } from "zod";
 export const getUserName = (user: Models.Document[] | null): string => {
   return user?.[0]?.username || "name";
 };
-
+export const getUserId = (user: Models.Document[] | null): string => {
+  return user?.[0]?.$id || "";
+};
 type ToastType = "success" | "error" | "info";
 
 const ShowToast = (
